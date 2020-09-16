@@ -10,12 +10,13 @@ const file = './README.md'
 const asset ='./assets'
 const linkify = md.linkify
 
+//TODO FOR PUEDE SER UN MAP
 
 const readingFolder = (probAsset) => {
   //Verifica sí es un directorio o un file
   const assets = fs.statSync(probAsset)
   console.log(assets.isFile())
-
+  //let result =[]
   if (!assets.isFile()){
     const directoryPath = path.join(probAsset);
 
@@ -29,10 +30,11 @@ const readingFolder = (probAsset) => {
         files.forEach(function (file) {
             console.log(file);
             if (path.extname(file)=='.md') {
-                arrayFiles.push(file)
+              arrayFiles.push(file)
             }
         });
         return console.log(arrayFiles)
+        //result = arrayFiles
     });
   }
 
@@ -48,15 +50,17 @@ const readingFolder = (probAsset) => {
         const match = linkify.match(chunk)
         console.log(match.length)
         for (let i = 0; i < match.length; i++){
-          arr.push(match[i].url)
+          arr.push(match[i])
         }
       }
       return console.log(arr)
+      //result = arr
     });
   }
+  //return result 
 };
 
-readingFolder(asset)
+readingFolder(file)
 
 
 
@@ -112,4 +116,6 @@ out.push(i);
 return out; // out.lenght quita todos los repetidos, con .length del array
 } */
 
-//status code, resolucion normal 
+//status code, resolucion normal }
+
+//Respuesta, res, status code, href, text
