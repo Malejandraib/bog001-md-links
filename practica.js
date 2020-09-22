@@ -7,8 +7,9 @@ const md = new MarkdownIt();
 const file = './README.md'
 const asset ='./assets'
 const linkify = md.linkify
+const otherPath = '.'
 const newPath = 'C:/Users/ASUS/Desktop/nuevo/Prueba'
-const relativePath = 'C:\\Users\\ASUS\\Desktop\\nuevo\\Prueba' //'.'
+const relativePath = 'C:\\Users\\ASUS\\Desktop\\nuevo\\Prueba' 
 
 // Aqui deberia resolver si el path es absoluto y normalizarlo 
 const findPath = (lookingPath)=>{
@@ -19,16 +20,16 @@ const findPath = (lookingPath)=>{
     console.log(lookingPath)
     return lookingPath; // true
 }
-console.log('this path is absolute: ' + findPath(relativePath))
+console.log('this path is absolute: ' + findPath(otherPath))
 
-//Aquí debería leer los directorios hasta llegar a los archivos .md
+//Aquí debería leer los directorios hasta llegar a un array con los archivos .md
 
-const busqueda = (pathPrueba, resultado)=> {   //passsing directoryPath and callback function
+const busqueda = (pathPrueba, resultado)  => {   //passsing directoryPath and callback function
     let arrResult = [];
 
-    let algoTemporal = fs.lstatSync(pathPrueba)
+    let statPath = fs.lstatSync(pathPrueba)
 
-    if(algoTemporal.isDirectory()){
+    if(statPath.isDirectory()){
         let arrArchivos = fs.readdirSync(pathPrueba)
         arrResult = arrArchivos.map(filePath =>{
             return busqueda(path.join(pathPrueba, filePath))
@@ -37,6 +38,12 @@ const busqueda = (pathPrueba, resultado)=> {   //passsing directoryPath and call
 
     else if (path.extname(pathPrueba) =='.md') {
         let file = pathPrueba
+/*         const readingFile = fs.readFileSync(file,{ encoding: 'utf8' })
+        const match = linkify.match(readingFile)
+        match.forEach(link, () => {
+            //arr.push(link)
+            arrResult.push(link)
+        }) */
         arrResult.push(file)
     } 
 
@@ -50,7 +57,9 @@ const busqueda = (pathPrueba, resultado)=> {   //passsing directoryPath and call
 }
 
 
+//process.stdout.write (content)
 
+console.log(busqueda)
 
 const readingFolder = (pathPrueba, searchMethod) => {
         return new Promise ((resolve, reject) => {
@@ -58,7 +67,7 @@ const readingFolder = (pathPrueba, searchMethod) => {
         })
 }
 
-readingFolder(findPath(relativePath), busqueda).then(console.log)
+readingFolder(findPath(otherPath), busqueda).then(console.log)
 
 
 /* const readingFiles = (filePath)=>{
@@ -70,28 +79,24 @@ readingFolder(findPath(relativePath), busqueda).then(console.log)
 
 readingFiles () */
 
+//Aquí deberia leer cada uno de los archivos .md y sacar los links 
+/* arrayx = ['C:/Users/ASUS/Desktop/Laboratoria/bog001-md-links/assets/README.md','C:/Users/ASUS/Desktop/Laboratoria/bog001-md-links/node_modules/follow-redirects/README.md']
+const reading =(probAsset)=>{
+    const arr = [];
+    probAsset.forEach(file, () =>{
+        const readingFile = fs.readFileSync(file,{ encoding: 'utf8' })
+        const match = linkify.match(readingFile)
+        match.forEach(link, () => {
+            arr.push(link)
+        })
+    return arr
+    })
+}
+
+
+reading(arrayx) */
 
 
 
 
 
-
-/* 
-findPath(relativePath)
-.then(readingFolder(response) {
-    return findfiles(response);
-}).then()
-
-firstRequest()
-  .then(function(response) {
-    return secondRequest(response);
-}).then(function(nextResponse) {  
-    return thirdRequest(nextResponse);
-}).then(function(finalResponse) {  
-    console.log('Final response: ' + finalResponse);
-}).catch(failureCallback); */
-
-       /*      let i = 0
-            while (i <= findDir.length){
-                console.log(path.extname(i) =='.md')
-            } */
