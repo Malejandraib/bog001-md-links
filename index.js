@@ -4,118 +4,113 @@
  */
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
+const https = require('https')
 const MarkdownIt = require('markdown-it');
+const { relative } = require('path');
 const md = new MarkdownIt();
 const file = './README.md'
-const asset ='./assets'
+const asset = './assets'
 const linkify = md.linkify
+const relativePath = '.'
+const pathError = "otro.js"
+const newPath = 'C:/Users/ASUS/Desktop/nuevo/Prueba'
+const otherPath = 'C:\\Users\\ASUS\\Desktop\\nuevo\\Prueba'
+let arrResults = [];
 
-//TODO FOR PUEDE SER UN MAP
-
-const readingFolder = (probAsset) => {
-  //Verifica sí es un directorio o un file
-  const assets = fs.statSync(probAsset)
-  console.log(assets.isFile())
-  //let result =[]
-  if (!assets.isFile()){
-    const directoryPath = path.join(probAsset);
-
-    //passsing directoryPath and callback function
-    fs.readdir(directoryPath, (err, files) => {
-        if (err){  
-            return console.log('Unable to scan directory: ' + err);
-        } 
-        //listing all files using forEach
-        const arrayFiles = [];
-        files.forEach(function (file) {
-            console.log(file);
-            if (path.extname(file)=='.md') {
-              arrayFiles.push(file)
-            }
-        });
-        return console.log(arrayFiles)
-        //result = arrayFiles
-    });
+// Aqui deberia resolver si el path es absoluto y resolverlo 
+const findPath = (lookingPath) => {
+  if (!path.isAbsolute(lookingPath)) {
+    console.log('here is a relative path ' + lookingPath)
+    return path.resolve(lookingPath)
   }
+  return lookingPath; // true
+}
 
-  else {
-    const readStream = fs.createReadStream(probAsset, { encoding: 'utf8' })
-    
-    readStream.on('data', (chunk) => {
-      const arr = [];
+// Verificar si es directorio o file y extraer los md files y rechazar cuando no hay .md
+const dirOrFile = (pathUsed) => {
 
-      //Verificación de path .md
-      if (path.extname(probAsset)=='.md') {
-        //Extrae todos los links del documento .md
-        const match = linkify.match(chunk)
-        console.log(match.length)
-        for (let i = 0; i < match.length; i++){
-          arr.push(match[i])
-        }
+  if (fs.lstatSync(pathUsed).isDirectory()) {
+
+    const arrFiles = fs.readdirSync(pathUsed);
+
+    arrFiles.map(fileName => {
+      if (path.extname(path.join(pathUsed, fileName)) == '.md') {
+        arrResults.push(path.join(pathUsed, fileName));
       }
-      return console.log(arr)
-      //result = arr
-    });
-  }
-  //return result 
-};
-
-readingFolder(file)
-
-
-
-//Leer file deberá ser sync 
-/* const readStream = fs.createReadStream(file, { encoding: 'utf8' })
-readStream.on('data', (chunk) => {
-  console.log('---------New Chunk------------');
-
-  //Verificación de path .md
-
-  //Extrae todos los links del documento .md
-  const match = linkify.match(chunk)
-  console.log(match.length)
-  const arr = [];
-  for (let i = 0; i < match.length; i++){
-    //console.log(match[i].url);
-    arr.push(match[i].url)
-  }
-  console.log(arr)
-  
-}) */
-
-
-
-/* const readingFile = (file)=>{
-  return new Promise((resolve, reject) =>{
-    fs.readFile(file, 'utf8', (err, data) => {
-      const match = linkify.match(data)
-      resolve (match)
-      reject (new Error (err))
+      else if (fs.lstatSync(path.join(pathUsed, fileName)).isDirectory()) {
+        dirOrFile(path.join(pathUsed, fileName));
+      }
     })
+  }
+  else if (path.extname(pathUsed) == '.md') {
+      arrResults.push(pathUsed)
+    }
+  else {
+    console.log(new Error('The file extension is invalid'));
+    return arrResults
+    
+  }
+  return arrResults;
+}
+
+
+//Aquí deberia leer cada archivo .md y retornar el array de links 
+const arr = [];
+const reading = (probAsset) => {
+
+  probAsset.forEach(file => {
+    const readingFile = fs.readFileSync(file, { encoding: 'utf8' })
+    const match = linkify.match(readingFile)
+
+    if (match) {
+      match.forEach((link) => {
+        arr.push({ href: link.url, text: link.text, path: file})
+      })
+      console.log(arr)
+      return arr
+    }
+
+    if (!match){
+      return console.log(new Error('none of those have links'));
+    }
+
   })
+
 }
+reading(dirOrFile(findPath(file)))
 
-console.log(readingFile(file)) */
-
-
-
-
-// Verificación de url unicos 
-/* const stats = (urlsArray) => {
-  var i,
-  len = urlsArray.length,
-  out = [],
-  obj = {};
-
-for (i = 0; i < len; i++) {
-obj[urlsArray[i]] = 0;
-}
-for (i in obj) {
-out.push(i);
-}
-return out; // out.lenght quita todos los repetidos, con .length del array
+/* const firstFunc = (pathPrueba) => {
+  return new Promise ((resolve, reject) => {
+    findPath(pathPrueba)
+  })
 } */
 
-//status code, resolucion normal }
+// validacion de links 
 
-//Respuesta, res, status code, href, text
+
+
+/* var urlExists = require('url-exists');
+urlExists('https://www.google.com', function(err, exists) {
+  console.log(exists); // true
+}); */
+
+/* const validate = (arrPaths) =>{
+
+  arrPaths.forEach(paths =>{
+    
+  })
+  
+}
+
+validate() */
+
+
+
+
+/* const mdLinksDefault = (filePath, option = { validate: false } ) => {
+
+    if(!(path.extname(filePath) === ".md")){
+      return Promise.reject(new Error('Not supported file, markdown files only'));
+    }
+} */
