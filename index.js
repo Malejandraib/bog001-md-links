@@ -7,11 +7,12 @@ const path = require('path');
 const http = require('http');
 const https = require('https')
 const MarkdownIt = require('markdown-it');
-const { relative } = require('path');
 const md = new MarkdownIt();
+const linkify = md.linkify
+
+
 const file = './README.md'
 const asset = './assets'
-const linkify = md.linkify
 const relativePath = '.'
 const pathError = "otro.js"
 const newPath = 'C:/Users/ASUS/Desktop/nuevo/Prueba'
@@ -21,12 +22,10 @@ let arrResults = [];
 // Aqui deberia resolver si el path es absoluto y resolverlo 
 const findPath = (lookingPath) => {
   if (!path.isAbsolute(lookingPath)) {
-    console.log('here is a relative path ' + lookingPath)
     return path.resolve(lookingPath)
   }
-  return lookingPath; // true
+  return lookingPath;
 }
-
 // Verificar si es directorio o file y extraer los md files y rechazar cuando no hay .md
 const dirOrFile = (pathUsed) => {
 
@@ -44,73 +43,102 @@ const dirOrFile = (pathUsed) => {
     })
   }
   else if (path.extname(pathUsed) == '.md') {
-      arrResults.push(pathUsed)
-    }
+    arrResults.push(pathUsed)
+  }
   else {
     console.log(new Error('The file extension is invalid'));
     return arrResults
-    
+
   }
   return arrResults;
 }
 
 
-//Aquí deberia leer cada archivo .md y retornar el array de links 
-const arr = [];
-const reading = (probAsset) => {
+//Aquí deberia leer cada archivo .md y retornar el array de links Reading file async 
+const readingAsync = (arrPaths) => {
+  let arr = [];
+  const readPromise = new Promise((resolve, reject) => {
+    arrPaths.forEach(paths => {
+      fs.readFile(paths, 'utf8', (err, data) => {
 
-  probAsset.forEach(file => {
-    const readingFile = fs.readFileSync(file, { encoding: 'utf8' })
-    const match = linkify.match(readingFile)
+        if (err) { reject(console.log(new Error('None of this files have links' + err))) };
 
-    if (match) {
-      match.forEach((link) => {
-        arr.push({ href: link.url, text: link.text, path: file})
+        const matching = linkify.match(data);
+        if (matching) {
+          matching.forEach(link => {
+            arr.push({ path: paths, href: link.url, text: link.text })
+          })
+          resolve(arr)
+        }
       })
-      console.log(arr)
-      return arr
-    }
-
-    if (!match){
-      return console.log(new Error('none of those have links'));
-    }
-
+    })
   })
-
+  return readPromise
 }
-reading(dirOrFile(findPath(file)))
-
-/* const firstFunc = (pathPrueba) => {
-  return new Promise ((resolve, reject) => {
-    findPath(pathPrueba)
-  })
-} */
 
 // validacion de links 
+const validate = (urls) => {
+  let arrValidate = [];
+  const validatePromise = new Promise((resolve, reject) => {
+    arrValidate = urls.map(url => {
 
+      const myURL = new URL(url.href);
 
+      const promiseHttp = new Promise((resolve, reject) => {
+        if (myURL.protocol == 'http:') {
+          http.get(url.href, (res) => {
+            const { statusCode } = res;
+            if (res.statusCode == 404) {
+              resolve({ href: myURL.href, path: url.path, status: res.statusCode, statusValid: 'FAIL' })
 
-/* var urlExists = require('url-exists');
-urlExists('https://www.google.com', function(err, exists) {
-  console.log(exists); // true
-}); */
+            }
+            else {
+              resolve({ href: myURL.href, path: url.path, status: res.statusCode, statusValid: 'OK' })
+            }
+          })
+        }
 
-/* const validate = (arrPaths) =>{
+        else if (myURL.protocol == 'https:') {
+          https.get(url.href, (res) => {
+            const { statusCode } = res;
+            if (res.statusCode == 404) {
+              resolve({ href: myURL.href, path: url.path, status: res.statusCode, statusValid: 'FAIL' })
+            }
+            else {
+              resolve({ href: myURL.href, path: url.path, status: res.statusCode, statusValid: 'OK' })
+            }
+          })
+        }
+        else { reject(new Error('None of this links work')) }
+      })
 
-  arrPaths.forEach(paths =>{
-    
+      return promiseHttp
+    })
+    Promise.all(arrValidate).then(resolve)
   })
-  
+  return validatePromise
 }
 
-validate() */
+const mdLinksDefault = (filePath, option = {}) => {
 
+  if (path.extname(filePath) !== ".md") {
+    return Promise.reject(new Error('Not supported file, markdown files only'));
+  }
 
+  return readingAsync(dirOrFile(findPath(filePath)))
+    .then((arrobjects) => {
+      console.log(arrobjects)
+      if (option.validate) {
+        console.log('hay que validar')
+        /* return validate(arrobjects).then((result) => {
+          console.log(result)
+        }) */
+      }
+      else {
+        console.log('no hay que validar')
+        return Promise.resolve(arrobjects)
+      }
+    })
+}
 
-
-/* const mdLinksDefault = (filePath, option = { validate: false } ) => {
-
-    if(!(path.extname(filePath) === ".md")){
-      return Promise.reject(new Error('Not supported file, markdown files only'));
-    }
-} */
+mdLinksDefault(file, { validate: true }).then(console.log)
