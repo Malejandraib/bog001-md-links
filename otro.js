@@ -6,17 +6,6 @@ const http = require('http');
 const https = require('https')
 
 
-/* const axios = require('axios');
-//async 
-axios.get('https://fantoniak.xyz/test').then((res) =>{
-  console.log("Este es el res:", res.status); // 404
-}, (e) =>{
-  console.log("Este es el otro callbak:", e);
-  return Promise.resolve(e);
-}).then((loquesea) => {console.log(loquesea);
-  return 'Holi'
-}).then(console.log); */
-
 arrayx = [
   'C:/Users/ASUS/Desktop/nuevo/Prueba/Folder 1/fileotro.md',
   'C:/Users/ASUS/Desktop/nuevo/Prueba/Folder 1/Folder1-2/folder1.2otro.md',
@@ -125,7 +114,7 @@ const arraypaths = [
 ]
 
 
-const reading = (probAsset) => {
+/* const reading = (probAsset) => {
   const arr = [];
   probAsset.forEach(file => {
     const readingFile = fs.readFileSync(file, { encoding: 'utf8' })
@@ -143,7 +132,7 @@ const reading = (probAsset) => {
     return arr
   })
 }
-
+ */
 
 /* const validate = (urls) => {
   let arrValidate = [];
@@ -260,4 +249,4 @@ const validate = (urls) => {
   return validatePromise
 }
 
-validate(arraypaths).then(console.log)
+//validate(arraypaths).then(console.log)

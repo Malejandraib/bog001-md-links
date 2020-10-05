@@ -53,7 +53,6 @@ const dirOrFile = (pathUsed) => {
   return arrResults;
 }
 
-
 //Aquí deberia leer cada archivo .md y retornar el array de links Reading file async 
 const readingAsync = (arrPaths) => {
   let arr = [];
@@ -79,12 +78,13 @@ const readingAsync = (arrPaths) => {
 // validacion de links 
 const validate = (urls) => {
   let arrValidate = [];
+
   const validatePromise = new Promise((resolve, reject) => {
     arrValidate = urls.map(url => {
 
       const myURL = new URL(url.href);
 
-      const promiseHttp = new Promise((resolve, reject) => {
+      const promiseHttp = new Promise((resolve) => {
         if (myURL.protocol == 'http:') {
           http.get(url.href, (res) => {
             const { statusCode } = res;
@@ -119,20 +119,18 @@ const validate = (urls) => {
   return validatePromise
 }
 
-const mdLinksDefault = (filePath, option = {}) => {
 
-  if (path.extname(filePath) !== ".md") {
-    return Promise.reject(new Error('Not supported file, markdown files only'));
-  }
+
+const mdLinksDefault = (filePath, option = {}) => {
 
   return readingAsync(dirOrFile(findPath(filePath)))
     .then((arrobjects) => {
       console.log(arrobjects)
       if (option.validate) {
         console.log('hay que validar')
-        /* return validate(arrobjects).then((result) => {
+        return validate(arrobjects).then((result) => {
           console.log(result)
-        }) */
+        })
       }
       else {
         console.log('no hay que validar')
@@ -141,4 +139,4 @@ const mdLinksDefault = (filePath, option = {}) => {
     })
 }
 
-mdLinksDefault(file, { validate: true }).then(console.log)
+mdLinksDefault(newPath, { validate: true }).then(console.log)
