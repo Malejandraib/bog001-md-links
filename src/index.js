@@ -137,6 +137,7 @@ const mdLinksDefault = (filePath, option = {}) => {
         return Promise.resolve(arrobjects)
       }
     })
+    
 }
 
 mdLinksDefault(newPath, { validate: true }).then(console.log)

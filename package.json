@@ -7,7 +7,10 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "eslint": "eslint --ext .js src/ test/",
+    "pretest": "npm run eslint",
+    "test": "jest --verbose --coverage"
+
   },
   "repository": {
     "type": "git",
@@ -29,7 +32,12 @@
     "markdown-it": "^11.0.0",
     "url-exists": "^1.0.3"
   },
-  "bin":{
+  "bin": {
     "md-links": "./bin/cli.js"
+  },
+  "devDependencies": {
+    "eslint": "^7.10.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.1"
   }
 }
