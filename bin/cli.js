@@ -1,22 +1,11 @@
 #!/usr/bin/env node
 
-const mdLinks = require('../src/index');
-
-//Grab provided args
-
-const [, , ...args] = process.argv
-
-const stats = (urlsArray) => {
-    var i,
-        len = urlsArray.length,
-        out = [],
-        obj = {};
-
-    for (i = 0; i < len; i++) {
-        obj[urlsArray[i]] = 0;
+if (option.stats){
+    return 
     }
-    for (i in obj) {
-        out.push(i);
-    }
-    return out.length; // out.lenght 
-}
+  
+  if (option.stats && option.validate){
+    
+  }
+  
+  mdLinksDefault(asset, { validate: false }).then(funcionStats(res)).catch(console.log)

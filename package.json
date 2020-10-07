@@ -10,7 +10,6 @@
     "eslint": "eslint --ext .js src/ test/",
     "pretest": "npm run eslint",
     "test": "jest --verbose --coverage"
-
   },
   "repository": {
     "type": "git",
@@ -30,6 +29,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "markdown-it": "^11.0.0",
+    "marked": "^1.2.0",
     "url-exists": "^1.0.3"
   },
   "bin": {

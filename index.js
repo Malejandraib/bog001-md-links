@@ -6,17 +6,19 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const https = require('https')
+const marked = require('marked');
 const MarkdownIt = require('markdown-it');
 const md = new MarkdownIt();
 const linkify = md.linkify
 
 
+
 const file = './README.md'
 const asset = './assets'
-const relativePath = '.'
 const pathError = "otro.js"
 const newPath = 'C:/Users/ASUS/Desktop/nuevo/Prueba'
-const otherPath = 'C:\\Users\\ASUS\\Desktop\\nuevo\\Prueba'
+const vacia = './carpeta vacia'
+const otro = './assets/blog2.txt'
 let arrResults = [];
 
 // Aqui deberia resolver si el path es absoluto y resolverlo 
@@ -28,11 +30,9 @@ const findPath = (lookingPath) => {
 }
 // Verificar si es directorio o file y extraer los md files y rechazar cuando no hay .md
 const dirOrFile = (pathUsed) => {
-
   if (fs.lstatSync(pathUsed).isDirectory()) {
 
     const arrFiles = fs.readdirSync(pathUsed);
-
     arrFiles.map(fileName => {
       if (path.extname(path.join(pathUsed, fileName)) == '.md') {
         arrResults.push(path.join(pathUsed, fileName));
@@ -61,12 +61,14 @@ const readingAsync = (arrPaths) => {
       fs.readFile(paths, 'utf8', (err, data) => {
 
         if (err) { reject(console.log(new Error('None of this files have links' + err))) };
-
+        
         const matching = linkify.match(data);
         if (matching) {
-          matching.forEach(link => {
-            arr.push({ path: paths, href: link.url, text: link.text })
-          })
+          const renderer = new marked.Renderer();
+          renderer.link = (href, title, text) => {
+          arr.push({href, text: text.slice(0, 49), file: paths});
+          };
+          marked(data, {renderer,});
           resolve(arr)
         }
       })
@@ -75,69 +77,58 @@ const readingAsync = (arrPaths) => {
   return readPromise
 }
 
+
 // validacion de links 
-const validate = (urls) => {
-  let arrValidate = [];
+const validate = (url) => {
+  const myURL = new URL(url.href);
 
-  const validatePromise = new Promise((resolve, reject) => {
-    arrValidate = urls.map(url => {
+  return new Promise((resolve) => {
 
-      const myURL = new URL(url.href);
-
-      const promiseHttp = new Promise((resolve) => {
-        if (myURL.protocol == 'http:') {
-          http.get(url.href, (res) => {
-            const { statusCode } = res;
-            if (res.statusCode == 404) {
-              resolve({ href: myURL.href, path: url.path, status: res.statusCode, statusValid: 'FAIL' })
-
-            }
-            else {
-              resolve({ href: myURL.href, path: url.path, status: res.statusCode, statusValid: 'OK' })
-            }
-          })
+    if (myURL.protocol == 'http:') {
+      http.get(url.href, (res) => {
+        if (res.statusCode == 404) {
+          resolve({ href: myURL.href, path: url.file, text:url.text, status: res.statusCode, statusValid: 'FAIL' })
         }
-
-        else if (myURL.protocol == 'https:') {
-          https.get(url.href, (res) => {
-            const { statusCode } = res;
-            if (res.statusCode == 404) {
-              resolve({ href: myURL.href, path: url.path, status: res.statusCode, statusValid: 'FAIL' })
-            }
-            else {
-              resolve({ href: myURL.href, path: url.path, status: res.statusCode, statusValid: 'OK' })
-            }
-          })
+        else {
+          resolve({ href: myURL.href, path: url.file, text:url.text, status: res.statusCode, statusValid: 'OK' })
         }
-        else { reject(new Error('None of this links work')) }
-      })
+      }).on('error', function(e) {
+        resolve({ href: myURL.href, path: url.file, text:url.text, status: 404, statusValid: 'FAIL' })
+      });
+    }
 
-      return promiseHttp
-    })
-    Promise.all(arrValidate).then(resolve)
+    else if (myURL.protocol == 'https:') {      
+        https.get(url.href, (res) => {
+          if (res.statusCode == 404) {
+            resolve({ href: myURL.href, path: url.file, text:url.text, status: res.statusCode, statusValid: 'FAIL' })
+          }
+          else {
+            resolve({ href: myURL.href, path: url.file, text:url.text, status: res.statusCode, statusValid: 'OK' })
+          }
+        }).on('error', function(e) {
+          resolve({ href: myURL.href, path: url.file, text:url.text, status: 404, statusValid: 'FAIL' })
+
+        });
+    }
   })
-  return validatePromise
 }
-
-
 
 const mdLinksDefault = (filePath, option = {}) => {
 
   return readingAsync(dirOrFile(findPath(filePath)))
     .then((arrobjects) => {
-      console.log(arrobjects)
       if (option.validate) {
-        console.log('hay que validar')
-        return validate(arrobjects).then((result) => {
-          console.log(result)
+        return Promise.all(arrobjects.map(validate)).then((data)=>{
+          return Promise.resolve(data)
         })
       }
       else {
-        console.log('no hay que validar')
         return Promise.resolve(arrobjects)
       }
-    })
-    
+    }).catch((error)=>{return Promise.reject(error)})
+
 }
 
-mdLinksDefault(newPath, { validate: true }).then(console.log)
+mdLinksDefault(asset, { validate: true }).then(console.log).catch(console.log)
+
+

@@ -15,13 +15,12 @@ const pathError = "otro.js"
 // Aqui deberia resolver si el path es absoluto y resolverlo 
 const findPath = (lookingPath)=>{
     if (!path.isAbsolute(lookingPath)){
-        console.log('here is a relative path ' + lookingPath)
         return path.resolve(lookingPath)
     }
     console.log(lookingPath)
     return lookingPath; // true
 }
-console.log('this path is absolute: ' + findPath(otherPath))
+//console.log('this path is absolute: ' + findPath(otherPath))
 
 //let arr= [];
 // Está función debe retornar el array de objetos de los links 
@@ -83,9 +82,7 @@ const readingFolder = (pathPrueba, searchMethod) => {
         })
 }
 
-readingFolder(findPath(file), busqueda).then(console.log)
-
-
+//readingFolder(findPath(file), busqueda).then(console.log)
 
 
 
