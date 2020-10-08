@@ -1,10 +1,7 @@
-#!/usr/bin/env node
-const { options } = require('marked');
-const mdLinks = require('../index');
 const chalk = require('chalk');
 
-
-const [, , ... argv] = process.argv
+const mdLinks = require('./index');
+const asset = './assets'
 
 const stats = (urlsArray) => {
     let i
@@ -18,7 +15,7 @@ const stats = (urlsArray) => {
     for (i in obj) {
         out.push(i);
     }
-    return {Unique: out.length, Total: len};
+    return { Unique: out.length, Total: len };
 }
 
 const validateStats = (urlsArray) => {
@@ -34,7 +31,7 @@ const validateStats = (urlsArray) => {
         if (urlsArray[i].status == 404) {
             broken += 1
         }
-        if(urlsArray[i].Check =='OK'){
+        if (urlsArray[i].Check == 'OK') {
             ok += 1
         }
     }
@@ -43,23 +40,15 @@ const validateStats = (urlsArray) => {
     }
 
 
-    return { Unique: out.length, Total: len, Broken: broken, Ok: ok};
+    return { Unique: out.length, Total: len, Broken: broken, Ok: ok };
 }
 
+mdLinks(asset, { validate: false }).then((res) => {
+    console.log(stats(res))
+}).catch(console.log)
 
 
 
-
-
-
-if (options.stats){
-    mdLinks(asset, { validate: false }).then((res)=>{
-        stats(res)
-    }).catch(console.log)
-}
-
-if (options.validate && options.stats){
-    mdLinks(asset, { validate: true }).then((res)=>{
-        validateStats(res)
-    }).catch(console.log)
-}
+mdLinks(asset, { validate: true }).then((res) => {
+    console.log(validateStats(res))
+}).catch(console.log)

@@ -1,7 +1,3 @@
-/* module.exports = () => {
-  // ... Deberia tener require en algún lado? 
-};
- */
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -10,15 +6,8 @@ const marked = require('marked');
 const MarkdownIt = require('markdown-it');
 const md = new MarkdownIt();
 const linkify = md.linkify
-
-
-
-const file = './README.md'
 const asset = './assets'
-const pathError = "otro.js"
 const newPath = 'C:/Users/ASUS/Desktop/nuevo/Prueba'
-const vacia = './carpeta vacia'
-const otro = './assets/blog2.txt'
 let arrResults = [];
 
 // Aqui deberia resolver si el path es absoluto y resolverlo 
@@ -48,7 +37,6 @@ const dirOrFile = (pathUsed) => {
   else {
     console.log(new Error('The file extension is invalid'));
     return arrResults
-
   }
   return arrResults;
 }
@@ -61,14 +49,14 @@ const readingAsync = (arrPaths) => {
       fs.readFile(paths, 'utf8', (err, data) => {
 
         if (err) { reject(console.log(new Error('None of this files have links' + err))) };
-        
+
         const matching = linkify.match(data);
         if (matching) {
           const renderer = new marked.Renderer();
           renderer.link = (href, title, text) => {
-          arr.push({href, text: text.slice(0, 49), file: paths});
+            arr.push({ href, text: text.slice(0, 49), file: paths });
           };
-          marked(data, {renderer,});
+          marked(data, { renderer, });
           resolve(arr)
         }
       })
@@ -76,7 +64,6 @@ const readingAsync = (arrPaths) => {
   })
   return readPromise
 }
-
 
 // validacion de links 
 const validate = (url) => {
@@ -87,48 +74,51 @@ const validate = (url) => {
     if (myURL.protocol == 'http:') {
       http.get(url.href, (res) => {
         if (res.statusCode == 404) {
-          resolve({ href: myURL.href, path: url.file, text:url.text, status: res.statusCode, statusValid: 'FAIL' })
+          resolve({ href: myURL.href, path: url.file, text: url.text, status: res.statusCode, Check: 'FAIL' })
         }
         else {
-          resolve({ href: myURL.href, path: url.file, text:url.text, status: res.statusCode, statusValid: 'OK' })
+          resolve({ href: myURL.href, path: url.file, text: url.text, status: res.statusCode, Check: 'OK' })
         }
-      }).on('error', function(e) {
-        resolve({ href: myURL.href, path: url.file, text:url.text, status: 404, statusValid: 'FAIL' })
+      }).on('error', function (e) {
+        resolve({ href: myURL.href, path: url.file, text: url.text, status: 404, Check: 'OK' })
       });
     }
 
-    else if (myURL.protocol == 'https:') {      
-        https.get(url.href, (res) => {
-          if (res.statusCode == 404) {
-            resolve({ href: myURL.href, path: url.file, text:url.text, status: res.statusCode, statusValid: 'FAIL' })
-          }
-          else {
-            resolve({ href: myURL.href, path: url.file, text:url.text, status: res.statusCode, statusValid: 'OK' })
-          }
-        }).on('error', function(e) {
-          resolve({ href: myURL.href, path: url.file, text:url.text, status: 404, statusValid: 'FAIL' })
+    else if (myURL.protocol == 'https:') {
+      https.get(url.href, (res) => {
+        if (res.statusCode == 404) {
+          resolve({ href: myURL.href, path: url.file, text: url.text, status: res.statusCode, Check: 'FAIL' })
+        }
+        else {
+          resolve({ href: myURL.href, path: url.file, text: url.text, status: res.statusCode, Check: 'OK' })
+        }
+      }).on('error', function (e) {
+        resolve({ href: myURL.href, path: url.file, text: url.text, status: 404, Check: 'Ok' })
 
-        });
+      });
     }
   })
 }
 
-const mdLinksDefault = (filePath, option = {}) => {
+const mdLinks = (filePath, options = {}) => {
 
   return readingAsync(dirOrFile(findPath(filePath)))
     .then((arrobjects) => {
-      if (option.validate) {
-        return Promise.all(arrobjects.map(validate)).then((data)=>{
+      if (options.validate) {
+        return Promise.all(arrobjects.map(validate)).then((data) => {
           return Promise.resolve(data)
         })
       }
       else {
         return Promise.resolve(arrobjects)
       }
-    }).catch((error)=>{return Promise.reject(error)})
+    }).catch((error) => { return Promise.reject(error) })
 
 }
 
-mdLinksDefault(asset, { validate: true }).then(console.log).catch(console.log)
+//mdLinks(asset, { validate: true }).then(console.log).catch(console.log)
+
+module.exports = mdLinks
+
 
 
