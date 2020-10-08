@@ -6,8 +6,6 @@ const marked = require('marked');
 const MarkdownIt = require('markdown-it');
 const md = new MarkdownIt();
 const linkify = md.linkify
-const asset = './assets'
-const newPath = 'C:/Users/ASUS/Desktop/nuevo/Prueba'
 let arrResults = [];
 
 // Aqui deberia resolver si el path es absoluto y resolverlo 
@@ -17,6 +15,7 @@ const findPath = (lookingPath) => {
   }
   return lookingPath;
 }
+
 // Verificar si es directorio o file y extraer los md files y rechazar cuando no hay .md
 const dirOrFile = (pathUsed) => {
   if (fs.lstatSync(pathUsed).isDirectory()) {
@@ -101,7 +100,6 @@ const validate = (url) => {
 }
 
 const mdLinks = (filePath, options = {}) => {
-
   return readingAsync(dirOrFile(findPath(filePath)))
     .then((arrobjects) => {
       if (options.validate) {
@@ -113,12 +111,7 @@ const mdLinks = (filePath, options = {}) => {
         return Promise.resolve(arrobjects)
       }
     }).catch((error) => { return Promise.reject(error) })
-
 }
 
 //mdLinks(asset, { validate: true }).then(console.log).catch(console.log)
-
 module.exports = mdLinks
-
-
-

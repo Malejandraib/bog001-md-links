@@ -38,17 +38,17 @@ const validateStats = (urlsArray) => {
     for (i in obj) {
         out.push(i);
     }
-
-
     return { Unique: out.length, Total: len, Broken: broken, Ok: ok };
 }
 
 mdLinks(asset, { validate: false }).then((res) => {
-    console.log(stats(res))
+    const algo = stats(res)
+    console.log(chalk.blue.bold( "Unique: " + algo.Unique), chalk.yellow.bold("Total: "+ algo.Total))
 }).catch(console.log)
 
 
 
 mdLinks(asset, { validate: true }).then((res) => {
-    console.log(validateStats(res))
+    const algo = validateStats(res)
+    console.log(chalk.blue.bold( "Unique: " + algo.Unique), chalk.yellow.bold("Total: "+ algo.Total), chalk.red.bold( "Broken: " + algo.Broken), chalk.green.bold("Ok: "+ algo.Ok))
 }).catch(console.log)

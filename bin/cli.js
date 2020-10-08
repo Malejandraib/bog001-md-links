@@ -48,10 +48,6 @@ const validateStats = (urlsArray) => {
 
 
 
-
-
-
-
 if (options.stats){
     mdLinks(asset, { validate: false }).then((res)=>{
         stats(res)
@@ -63,3 +59,16 @@ if (options.validate && options.stats){
         validateStats(res)
     }).catch(console.log)
 }
+
+
+mdLinks(asset, { validate: false }).then((res) => {
+    const algo = stats(res)
+    console.log(chalk.blue.bold( "Unique: " + algo.Unique), chalk.yellow.bold("Total: "+ algo.Total))
+}).catch(console.log)
+
+
+
+mdLinks(asset, { validate: true }).then((res) => {
+    const algo = validateStats(res)
+    console.log(chalk.blue.bold( "Unique: " + algo.Unique), chalk.yellow.bold("Total: "+ algo.Total), chalk.red.bold( "Broken: " + algo.Broken), chalk.green.bold("Ok: "+ algo.Ok))
+}).catch(console.log)
