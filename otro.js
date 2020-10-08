@@ -1,7 +1,14 @@
 const chalk = require('chalk');
 
-const mdLinks = require('./index');
+const mdLinks = require('./src/index');
 const asset = './assets'
+const fs = require('fs');
+const path = require('path');
+const MarkdownIt = require('markdown-it');
+const marked = require('marked');
+const md = new MarkdownIt();
+const { linkify } = md;
+const arrResults = [];
 
 const stats = (urlsArray) => {
     let i
@@ -43,6 +50,7 @@ const validateStats = (urlsArray) => {
 
 mdLinks(asset, { validate: false }).then((res) => {
     const algo = stats(res)
+    console.log(chalk.bold( "STATS"))
     console.log(chalk.blue.bold( "Unique: " + algo.Unique), chalk.yellow.bold("Total: "+ algo.Total))
 }).catch(console.log)
 
@@ -50,5 +58,7 @@ mdLinks(asset, { validate: false }).then((res) => {
 
 mdLinks(asset, { validate: true }).then((res) => {
     const algo = validateStats(res)
+    console.log(chalk.bold( "VALIDATE + STATS"))
     console.log(chalk.blue.bold( "Unique: " + algo.Unique), chalk.yellow.bold("Total: "+ algo.Total), chalk.red.bold( "Broken: " + algo.Broken), chalk.green.bold("Ok: "+ algo.Ok))
 }).catch(console.log)
+

@@ -1,8 +1,10 @@
-const mdLinks = require('../index');
-const mocks = require('./_mocks_');
+const mdLinks = require('../src/index');
 
 describe('mdLinks', () => {
   it('should be a function', () => {
-    console.log('FIX ME!');
+    expect(typeof mdLinks).toBe('function');
+  });
+  it('if validate: false and path then array objects', () => {
+
   });
 });
