@@ -4,7 +4,6 @@ const { mdvalidate } = require('./_mocks_.js');
 const mocks = require('./_mocks_.js')
 const relativePath = '.';
 const pathPrueba = 'C:/Users/ASUS/Desktop/Laboratoria/bog001-md-links/assets';
-const pathmd = 'C:/Users/ASUS/Desktop/Laboratoria/bog001-md-links/assets/Carpeta 1/otro.md'
 
 describe('findPath', () => {
   it('should be a function', () => {
@@ -74,3 +73,4 @@ describe('mdLinks', () => {
     });
   });
 });
+

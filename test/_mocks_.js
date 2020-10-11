@@ -31,7 +31,7 @@ const obj404 = {
     path: 'C:\\Users\\ASUS\\Desktop\\Laboratoria\\bog001-md-links\\assets\\otro.md',
     text: 'Node.js',
     status: 404,
-    Check: 'Ok'
+    Check: 'FAIL'
 }
 
 const obj200 = {

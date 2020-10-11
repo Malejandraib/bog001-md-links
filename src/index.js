@@ -79,7 +79,7 @@ const validate = (url) => {
         }
       }).on('error', () => {
         resolve({
-          href: myURL.href, path: url.file, text: url.text, status: 404, Check: 'OK',
+          href: myURL.href, path: url.file, text: url.text, status: 404, Check: 'FAIL',
         });
       });
     } else if (myURL.protocol === 'https:') {
@@ -95,7 +95,7 @@ const validate = (url) => {
         }
       }).on('error', () => {
         resolve({
-          href: myURL.href, path: url.file, text: url.text, status: 404, Check: 'Ok',
+          href: myURL.href, path: url.file, text: url.text, status: 404, Check: 'FAIL',
         });
       });
     }
