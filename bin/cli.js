@@ -1,9 +1,10 @@
 #!/usr/bin/env node
+/* eslint-disable */
 /* eslint-disable no-console */
 const chalk = require('chalk');
 const program = require('commander');
 const CFonts = require('cfonts');
-const mdLinks = require('../src/index');
+const {mdLinks} = require('../src/index');
 const { stats, validateStats } = require('../src/stats.js');
 
 CFonts.say('md Links!', {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -101,6 +102,7 @@ const validate = (url) => {
   });
 };
 
+
 const mdLinks = (filePath, options = {}) => readingAsync(dirOrFile(findPath(filePath)))
   .then((arrobjects) => {
     if (options.validate) {
@@ -110,6 +112,12 @@ const mdLinks = (filePath, options = {}) => readingAsync(dirOrFile(findPath(file
     return Promise.resolve(arrobjects);
   }).catch((error) => Promise.reject(error));
 
-// mdLinks(asset, { validate: true }).then(console.log).catch(console.log)
+//mdLinks('C:/Users/ASUS/Desktop/Laboratoria/bog001-md-links/assets', { validate: false }).then(console.log).catch(console.log)
 
-module.exports = mdLinks;
+module.exports = {
+  mdLinks,
+  findPath,
+  dirOrFile,
+  readingAsync,
+  validate,
+};

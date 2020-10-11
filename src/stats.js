@@ -1,3 +1,4 @@
+/* eslint-disable */
 const stats = (urlsArray) => {
   let i;
   const len = urlsArray.length;
@@ -27,7 +28,9 @@ const validateStats = (urlsArray) => {
     if (urlsArray[i].Check === 'OK') { ok += 1; }
   }
   for (i in obj) { out.push(i); }
-    return { Unique: out.length, Total: len, Broken: broken, Ok: ok };
+  return {
+    Unique: out.length, Total: len, Broken: broken, Ok: ok,
+  };
 };
 
 module.exports = { stats, validateStats };
