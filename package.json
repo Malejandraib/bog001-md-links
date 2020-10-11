@@ -28,7 +28,9 @@
   "homepage": "https://github.com/Malejandraib/bog001-md-links#readme",
   "dependencies": {
     "axios": "^0.19.2",
+    "cfonts": "^2.8.6",
     "chalk": "^4.1.0",
+    "commander": "^6.1.0",
     "markdown-it": "^11.0.0",
     "marked": "^1.2.0",
     "url-exists": "^1.0.3"

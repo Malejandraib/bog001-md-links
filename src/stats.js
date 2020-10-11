@@ -8,8 +8,7 @@ const stats = (urlsArray) => {
   for (i = 0; i < len; i++) {
     obj[urlsArray[i].href] = 0;
   }
-  // eslint-disable-next-line guard-for-in
-  for (i in obj) {out.push(i)}
+  for (i in obj) { out.push(i); }
   return { Unique: out.length, Total: len };
 };
 
@@ -21,10 +20,11 @@ const validateStats = (urlsArray) => {
   let broken = 0;
   let ok = 0;
 
+  // eslint-disable-next-line no-plusplus
   for (i = 0; i < len; i++) {
     obj[urlsArray[i].href] = 0;
-    if (urlsArray[i].status === 404) { broken += 1 }
-    if (urlsArray[i].Check === 'OK') { ok += 1 }
+    if (urlsArray[i].status === 404) { broken += 1; }
+    if (urlsArray[i].Check === 'OK') { ok += 1; }
   }
   for (i in obj) { out.push(i); }
     return { Unique: out.length, Total: len, Broken: broken, Ok: ok };

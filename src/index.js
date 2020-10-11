@@ -43,7 +43,7 @@ const readingAsync = (arrPaths) => {
   const readPromise = new Promise((resolve, reject) => {
     arrPaths.forEach((paths) => {
       fs.readFile(paths, 'utf8', (err, data) => {
-        if (err) { reject(new Error(`None of this files have links${err}`)); }
+        if (err) { reject(new Error('None of this files have links')); }
 
         const matching = linkify.match(data);
         if (matching) {

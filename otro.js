@@ -48,17 +48,24 @@ const validateStats = (urlsArray) => {
     return { Unique: out.length, Total: len, Broken: broken, Ok: ok };
 }
 
+mdLinks(asset, { validate: false }).then(console.log).catch(console.log)
+
+mdLinks(asset, { validate: true }).then(console.log).catch(console.log)
+
+// si stats existe  --stats
 mdLinks(asset, { validate: false }).then((res) => {
-    const algo = stats(res)
-    console.log(chalk.bold( "STATS"))
-    console.log(chalk.blue.bold( "Unique: " + algo.Unique), chalk.yellow.bold("Total: "+ algo.Total))
+    const unitStat = stats(res)
+    console.log(unitStat)
+    console.log(chalk.black.bold.bgWhite( "STATS"))
+    console.table(chalk.blue.bold( "Unique: " + unitStat.Unique), chalk.yellow.bold("Total: "+ unitStat.Total))
 }).catch(console.log)
 
 
 
 mdLinks(asset, { validate: true }).then((res) => {
-    const algo = validateStats(res)
-    console.log(chalk.bold( "VALIDATE + STATS"))
-    console.log(chalk.blue.bold( "Unique: " + algo.Unique), chalk.yellow.bold("Total: "+ algo.Total), chalk.red.bold( "Broken: " + algo.Broken), chalk.green.bold("Ok: "+ algo.Ok))
+    const unitStats  = validateStats(res)
+    console.table(unitStats)
+    console.log(chalk.black.bold.bgWhite( "VALIDATE + STATS"))
+    console.log(chalk.blue.bold( "Unique: " + unitStats.Unique), chalk.yellow.bold("Total: "+ unitStats.Total), chalk.red.bold( "Broken: " + unitStats.Broken), chalk.green.bold("Ok: "+ unitStats.Ok))
 }).catch(console.log)
 
