@@ -7,7 +7,7 @@ const mdLinks = require('../src/index');
 const { stats, validateStats } = require('../src/stats.js');
 
 CFonts.say('md Links!', {
-    font: 'block', 
+    font: 'block',
     align: 'center',
 });
 
@@ -21,16 +21,16 @@ program
 program.parse(process.argv);
 
 const pathLinks = process.argv[2];
-if (!program.stats && !program.validate){
-    mdLinks(pathLinks, {validate:false}).then(console.log).catch(console.log);
+if (!program.stats && !program.validate) {
+    mdLinks(pathLinks, { validate: false }).then(console.log).catch(console.log);
 }
 
 if (program.validate && !program.stats) {
-    mdLinks(pathLinks, {validate:true} ).then(console.log).catch(console.log);
+    mdLinks(pathLinks, { validate: true }).then(console.log).catch(console.log);
 }
 
 if (program.stats && !program.validate) {
-    mdLinks(pathLinks, {validate:false } ).then((res) => {
+    mdLinks(pathLinks, { validate: false }).then((res) => {
         const algo = stats(res)
         console.log(chalk.black.bold("STATS"))
         console.log(chalk.blue.bold("Unique: " + algo.Unique), chalk.yellow.bold("Total: " + algo.Total))
@@ -38,7 +38,7 @@ if (program.stats && !program.validate) {
 }
 
 if (program.validate && program.stats) {
-    mdLinks(pathLinks, {validate:true}).then((res) => {
+    mdLinks(pathLinks, { validate: true }).then((res) => {
         const algo = validateStats(res)
         console.log(chalk.black.bold.bgWhite("VALIDATE + STATS"))
         console.log(chalk.blue.bold("Unique: " + algo.Unique), chalk.yellow.bold("Total: " + algo.Total), chalk.red.bold("Broken: " + algo.Broken), chalk.green.bold("Ok: " + algo.Ok))
