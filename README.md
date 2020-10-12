@@ -4,12 +4,10 @@
 
 * [1. Preámbulo](#1-preámbulo)
 * [2. Objetivos de aprendizaje](#3-objetivos-de-aprendizaje)
-* [5. Criterios de aceptación mínimos del proyecto](#5-criterios-de-aceptación-mínimos-del-proyecto)
-* [6. Entregables](#6-entregables)
-* [7. Hacker edition](#7-hacker-edition)
-* [8. Pistas, tips y lecturas complementarias](#8-pistas-tips-y-lecturas-complementarias)
-* [4. Checklist](#9-checklist)
-
+* [3. Criterios de aceptación mínimos del proyecto](#5-criterios-de-aceptación-mínimos-del-proyecto)
+* [4. ¿Cómo hago para que mi módulo sea _instalable_ desde GitHub?]()
+* [5. CLI (Command Line Interface - Interfaz de Línea de Comando)]()
+* [6. checklist ]()
 ***
 
 ## 1. Preámbulo
@@ -24,8 +22,9 @@ muchas veces están rotos o ya no son válidos y eso perjudica mucho el valor de
 la información que se quiere compartir.
 
 
-![md-links flowchart]('assets/flowChart.png')
+![md-links flowchart](assets/flowChart.png)
 
+***
 
 ## 2. Objetivos de aprendizaje
 
@@ -45,19 +44,19 @@ la información que se quiere compartir.
 
 ### Node
 
-* [ ] Uso de sistema de archivos. ([fs](https://nodejs.org/api/fs.html), [path](https://nodejs.org/api/path.html))
+* [x] Uso de sistema de archivos. ([fs](https://nodejs.org/api/fs.html), [path](https://nodejs.org/api/path.html))
 * [x] Instalar y usar módulos. ([npm](https://www.npmjs.com/))
 * [x] Creación de modules. [(CommonJS)](https://nodejs.org/docs/latest-v0.10.x/api/modules.html)
-* [ ] [Configuración de package.json.](https://docs.npmjs.com/files/package.json)
+* [x] [Configuración de package.json.](https://docs.npmjs.com/files/package.json)
 * [ ] [Configuración de npm-scripts](https://docs.npmjs.com/misc/scripts)
 * [x] Uso de CLI (Command Line Interface - Interfaz de Línea de Comando)
 
 ### Testing
 
-* [ ] [Testeo unitario.](https://jestjs.io/docs/es-ES/getting-started)
-* [ ] [Testeo asíncrono.](https://jestjs.io/docs/es-ES/asynchronous)
+* [x] [Testeo unitario.](https://jestjs.io/docs/es-ES/getting-started)
+* [x] [Testeo asíncrono.](https://jestjs.io/docs/es-ES/asynchronous)
 * [ ] [Uso de librerias de Mock.](https://jestjs.io/docs/es-ES/manual-mocks)
-* [ ] Uso de Mocks manuales.
+* [x] Uso de Mocks manuales.
 * [ ] Testeo para múltiples Sistemas Operativos.
 
 ### Estructura del código y guía de estilo
@@ -70,7 +69,7 @@ la información que se quiere compartir.
 
 * [x] Uso de comandos de git (add | commit | pull | status | push)
 * [x] Manejo de repositorios de GitHub (clone | fork | gh-pages)
-* [x] Colaboración en Github (branches | pull requests | |tags)
+* [ ] Colaboración en Github (branches | pull requests | |tags)
 * [x] Organización en Github (projects | issues | labels | milestones)
 
 ### HTTP
@@ -81,25 +80,9 @@ la información que se quiere compartir.
 
 * [x] [Recursión.](https://www.youtube.com/watch?v=lPPgY3HLlhQ)
 
+***
 
-### Archivos del proyecto
-
-* `README.md` con descripción del módulo, instrucciones de instalación/uso,
-  documentación del API y ejemplos. Todo lo relevante para que cualquier
-  developer que quiera usar tu librería pueda hacerlo sin inconvenientes.
-* `index.js`: Desde este archivo debes exportar una función (`mdLinks`).
-* `package.json` con nombre, versión, descripción, autores, licencia,
-  dependencias, scripts (pretest, test, ...)
-* `.editorconfig` con configuración para editores de texto. Este archivo no se
-  debe cambiar.
-* `.eslintrc` con configuración para linter. Este archivo no
-  se debe cambiar.
-* `.gitignore` para ignorar `node_modules` u otras carpetas que no deban
-  incluirse en control de versiones (`git`).
-* `test/md-links.spec.js` debe contener los tests unitarios para la función
-  `mdLinks()`. Tu inplementación debe pasar estos tets.
-
-### JavaScript API
+## 3. JavaScript API
 
 El módulo debe poder importarse en otros scripts de Node.js y debe ofrecer la
 siguiente interfaz:
@@ -125,7 +108,6 @@ las siguientes propiedades:
 * `text`: Texto que aparecía dentro del link (`<a>`).
 * `file`: Ruta del archivo donde se encontró el link.
 
-#### Ejemplo
 
 ```js
 const mdLinks = require("md-links");
@@ -149,7 +131,7 @@ mdLinks("./some/dir")
   .catch(console.error);
 ```
 
-### CLI (Command Line Interface - Interfaz de Línea de Comando)
+## 4. CLI (Command Line Interface - Interfaz de Línea de Comando)
 
 El ejecutable de nuestra aplicación debe poder ejecutarse de la siguiente
 manera a través de la terminal:
@@ -213,24 +195,7 @@ Unique: 3
 Broken: 1
 ```
 
-## 3. Hacker edition
-
-Las secciones llamadas _Hacker Edition_ son **opcionales**. Si **terminaste**
-con todo lo anterior y te queda tiempo, intenta completarlas. Así podrás
-profundizar y/o ejercitar más sobre los objetivos de aprendizaje del proyecto.
-
-* Puedes agregar la propiedad `line` a cada objeto `link` indicando en qué línea
-  del archivo se encontró el link.
-* Puedes agregar más estadísticas.
-* Integración continua con Travis o Circle CI.
-
-***
-
-## 4. Pistas, tips y lecturas complementarias
-
-### FAQs
-
-#### ¿Cómo hago para que mi módulo sea _instalable_ desde GitHub?
+## 5. ¿Cómo hago para que mi módulo sea _instalable_ desde GitHub?
 
 Para que el módulo sea instalable desde GitHub solo tiene que:
 
@@ -245,64 +210,11 @@ que usamos para la currícula no está publicado en el registro público de NPM,
 así que lo instalamos directamente desde GitHub con el comando `npm install
 Laboratoria/course-parser`.
 
-### Sugerencias de implementación
-
-La implementación de este proyecto tiene varias partes: leer del sistema de
-archivos, recibir argumentos a través de la línea de comando, analizar texto,
-hacer consultas HTTP, ... y todas estas cosas pueden enfocarse de muchas formas,
-tanto usando librerías como implementando en VanillaJS.
-
-Por poner un ejemplo, el _parseado_ (análisis) del markdown para extraer los
-links podría plantearse de las siguientes maneras (todas válidas):
-
-* Usando un _módulo_ como [markdown-it](https://github.com/markdown-it/markdown-it),
-  que nos devuelve un arreglo de _tokens_ que podemos recorrer para identificar
-  los links.
-* Siguiendo otro camino completamente, podríamos usar
-  [expresiones regulares (`RegExp`)](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Regular_Expressions).
-* También podríamos usar una combinación de varios _módulos_ (podría ser válido
-  transformar el markdown a HTML usando algo como [marked](https://github.com/markedjs/marked)
-  y de ahí extraer los link con una librería de DOM como [JSDOM](https://github.com/jsdom/jsdom)
-  o [Cheerio](https://github.com/cheeriojs/cheerio) entre otras).
-* Usando un _custom renderer_ de [marked](https://github.com/markedjs/marked)
-  (`new marked.Renderer()`).
-
-No dudes en consultar a tus compañeras, coaches y/o el [foro de la comunidad](http://community.laboratoria.la/c/js)
-si tienes dudas existenciales con respecto a estas decisiones. No existe una
-"única" manera correcta :wink:
-
-### Tutoriales / NodeSchool workshoppers
-
-* [learnyounode](https://github.com/workshopper/learnyounode)
-* [how-to-npm](https://github.com/workshopper/how-to-npm)
-* [promise-it-wont-hurt](https://github.com/stevekane/promise-it-wont-hurt)
-
-### Otros recursos
-
-* [Acerca de Node.js - Documentación oficial](https://nodejs.org/es/about/)
-* [Node.js file system - Documentación oficial](https://nodejs.org/api/fs.html)
-* [Node.js http.get - Documentación oficial](https://nodejs.org/api/http.html#http_http_get_options_callback)
-* [Node.js - Wikipedia](https://es.wikipedia.org/wiki/Node.js)
-* [What exactly is Node.js? - freeCodeCamp](https://medium.freecodecamp.org/what-exactly-is-node-js-ae36e97449f5)
-* [¿Qué es Node.js y para qué sirve? - drauta.com](https://www.drauta.com/que-es-nodejs-y-para-que-sirve)
-* [¿Qué es Nodejs? Javascript en el Servidor - Fazt en YouTube](https://www.youtube.com/watch?v=WgSc1nv_4Gw)
-* [¿Simplemente qué es Node.js? - IBM Developer Works, 2011](https://www.ibm.com/developerworks/ssa/opensource/library/os-nodejs/index.html)
-* [Node.js y npm](https://www.genbeta.com/desarrollo/node-js-y-npm)
-* [Módulos, librerías, paquetes, frameworks... ¿cuál es la diferencia?](http://community.laboratoria.la/t/modulos-librerias-paquetes-frameworks-cual-es-la-diferencia/175)
-* [Asíncronía en js](https://carlosazaustre.com/manejando-la-asincronia-en-javascript/)
-* [NPM](https://docs.npmjs.com/getting-started/what-is-npm)
-* [Publicar packpage](https://docs.npmjs.com/getting-started/publishing-npm-packages)
-* [Crear módulos en Node.js](https://docs.npmjs.com/getting-started/publishing-npm-packages)
-* [Leer un archivo](https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback)
-* [Leer un directorio](https://nodejs.org/api/fs.html#fs_fs_readdir_path_options_callback)
-* [Path](https://nodejs.org/api/path.html)
-* [Linea de comando CLI](https://medium.com/netscape/a-guide-to-create-a-nodejs-command-line-package-c2166ad0452e)
-
-## 4. Checklist
+## 6. Checklist
 
 ### General
 
-* [ ] Puede instalarse via `npm install --global <github-user>/md-links`
+* [x] Puede instalarse via `npm install --global @marialejandraip/md-links`
 
 ### `README.md`
 
@@ -312,10 +224,10 @@ si tienes dudas existenciales con respecto a estas decisiones. No existe una
 
 ### API `mdLinks(path, opts)`
 
-* [ ] El módulo exporta una función con la interfaz (API) esperada.
-* [ ] Implementa soporte para archivo individual
-* [ ] Implementa soporte para directorios
-* [ ] Implementa `options.validate`
+* [x] El módulo exporta una función con la interfaz (API) esperada.
+* [x] Implementa soporte para archivo individual
+* [x] Implementa soporte para directorios
+* [x] Implementa `options.validate`
 
 ### CLI
 
