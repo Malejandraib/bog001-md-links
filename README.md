@@ -24,8 +24,7 @@ muchas veces están rotos o ya no son válidos y eso perjudica mucho el valor de
 la información que se quiere compartir.
 
 
-![md-links flowchart]()
-
+![md-links flowchart](C:\Users\ASUS\Desktop\Laboratoria\bog001-md-links\assets\flowChart.png)
 
 
 ## 2. Objetivos de aprendizaje

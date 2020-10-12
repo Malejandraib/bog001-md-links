@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Malejandraib/bog001-md-links.git"
+    "url": "git+https://github.com/marialejandraip/bog001-md-links.git"
   },
   "keywords": [
     "markdown",
@@ -23,9 +23,9 @@
   "author": "María Ibáñez",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Malejandraib/bog001-md-links/issues"
+    "url": "https://github.com/marialejandraip/bog001-md-links/issues"
   },
-  "homepage": "https://github.com/Malejandraib/bog001-md-links#readme",
+  "homepage": "https://github.com/marialejandraip/bog001-md-links#readme",
   "dependencies": {
     "axios": "^0.19.2",
     "cfonts": "^2.8.6",
