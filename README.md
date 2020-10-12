@@ -24,7 +24,7 @@ muchas veces están rotos o ya no son válidos y eso perjudica mucho el valor de
 la información que se quiere compartir.
 
 
-![md-links flowchart](./assets/flowChart.png)
+![md-links flowchart]('assets/flowChart.png')
 
 
 ## 2. Objetivos de aprendizaje
